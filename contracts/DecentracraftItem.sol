@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import "./Utils/Ownable.sol";
@@ -25,7 +25,7 @@ contract DecentracraftItem is Ownable, usingProvable  {
         msg.sender.transfer(address(this).balance);
     }
 
-    function () external payable {
+    receive () external payable {
     }
 
     
@@ -56,7 +56,7 @@ contract DecentracraftItem is Ownable, usingProvable  {
         IPFSUploaderHash = _IPFSUploaderHash;
     }
 
-    function __callback(bytes32 _myid, string memory _result, bytes memory _proof) public {
+    function __callback(bytes32 _myid, string memory _result, bytes memory _proof) public override {
         if (validIds[_myid]==0) revert();
         if (msg.sender != provable_cbAddress()) revert();
         string memory attributes_hash = _result;

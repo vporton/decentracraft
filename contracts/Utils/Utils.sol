@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 contract Utils{
     function uint2str(uint _i) public pure returns (string memory _uintAsString) {

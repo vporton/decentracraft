@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 import "./IRNGReceiver.sol";
 import "./IRandomGenerator.sol";
@@ -26,14 +26,14 @@ contract ProvableRNG is Ownable, IRandomGenerator, usingProvable {
 
     mapping (bytes32 => IRNGReceiver) callingMap;
 
-    function () external payable {
+    receive () external payable {
     }
 
     constructor () public payable  { 
         provable_setProof(proofType_Ledger);
     }
 
-    function generateRandom() external payable returns (bytes32){
+    function generateRandom() external override payable returns (bytes32){
 
         uint256 QUERY_EXECUTION_DELAY = 0;         
         bytes32 queryId = provable_newRandomDSQuery(QUERY_EXECUTION_DELAY, NUM_RANDOM_BYTES_REQUESTED, GAS_FOR_CALLBACK);
@@ -42,7 +42,7 @@ contract ProvableRNG is Ownable, IRandomGenerator, usingProvable {
         return queryId;
     }
 
-    function __callback(bytes32 _queryId, string memory _result, bytes memory _proof) public {
+    function __callback(bytes32 _queryId, string memory _result, bytes memory _proof) public override {
         require(msg.sender == provable_cbAddress());
 
         if (provable_randomDS_proofVerify__returnCode(_queryId, _result, _proof) == 0) {

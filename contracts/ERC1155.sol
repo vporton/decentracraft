@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 import "./SafeMath.sol";
 import "./Address.sol";
@@ -45,6 +45,8 @@ contract ERC1155 is IERC1155, ERC165, CommonConstants, Ownable
 
     function supportsInterface(bytes4 _interfaceId)
     public
+    override
+    virtual
     view
     returns (bool) {
          if (_interfaceId == INTERFACE_SIGNATURE_ERC165 ||
@@ -87,7 +89,7 @@ contract ERC1155 is IERC1155, ERC165, CommonConstants, Ownable
         @param _value   Transfer amount
         @param _data    Additional data with no specified format, MUST be sent unaltered in call to `onERC1155Received` on `_to`
     */
-    function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data) external {
+    function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data) external virtual override {
 
         require(_to != address(0x0), "_to must be non-zero.");
         require(_from == msg.sender || operatorApproval[_from][msg.sender] == true, "Need operator approval for 3rd party transfers.");
@@ -123,7 +125,7 @@ contract ERC1155 is IERC1155, ERC165, CommonConstants, Ownable
         @param _values  Transfer amounts per token type (order and length must match _ids array)
         @param _data    Additional data with no specified format, MUST be sent unaltered in call to the `ERC1155TokenReceiver` hook(s) on `_to`
     */
-    function safeBatchTransferFrom(address _from, address _to, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external {
+    function safeBatchTransferFrom(address _from, address _to, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external virtual override {
 
         // MUST Throw on errors
         require(_to != address(0x0), "destination address must be non-zero.");
@@ -161,7 +163,7 @@ contract ERC1155 is IERC1155, ERC165, CommonConstants, Ownable
         @param _id     ID of the Token
         @return        The _owner's balance of the Token type requested
      */
-    function balanceOf(address _owner, uint256 _id) external view returns (uint256) {
+    function balanceOf(address _owner, uint256 _id) external virtual override view returns (uint256) {
         // The balance of any account can be calculated from the Transfer events history.
         // However, since we need to keep the balances to validate transfer request,
         // there is no extra cost to also privide a querry function.
@@ -175,7 +177,7 @@ contract ERC1155 is IERC1155, ERC165, CommonConstants, Ownable
         @param _ids    ID of the Tokens
         @return        The _owner's balance of the Token types requested (i.e. balance for each (owner, id) pair)
      */
-    function balanceOfBatch(address[] calldata _owners, uint256[] calldata _ids) external view returns (uint256[] memory) {
+    function balanceOfBatch(address[] calldata _owners, uint256[] calldata _ids) external virtual override view returns (uint256[] memory) {
 
         require(_owners.length == _ids.length);
 
@@ -194,7 +196,7 @@ contract ERC1155 is IERC1155, ERC165, CommonConstants, Ownable
         @param _operator  Address to add to the set of authorized operators
         @param _approved  True if the operator is approved, false to revoke approval
     */
-    function setApprovalForAll(address _operator, bool _approved) external {
+    function setApprovalForAll(address _operator, bool _approved) external virtual override {
         operatorApproval[msg.sender][_operator] = _approved;
         emit ApprovalForAll(msg.sender, _operator, _approved);
     }
@@ -205,7 +207,7 @@ contract ERC1155 is IERC1155, ERC165, CommonConstants, Ownable
         @param _operator  Address of authorized operator
         @return           True if the operator is approved, false if not
     */
-    function isApprovedForAll(address _owner, address _operator) external view returns (bool) {
+    function isApprovedForAll(address _owner, address _operator) external virtual override view returns (bool) {
         return operatorApproval[_owner][_operator];
     }
 

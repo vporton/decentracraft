@@ -1,5 +1,6 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
+// import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
 import "./IRNGReceiver.sol";
 import "./IRandomGenerator.sol";
 import "./Ownable.sol";
@@ -33,7 +34,7 @@ contract MockRNG is IRandomGenerator {
       if (msg.sender == owner) _;
     }
 
-    function generateRandom() external payable returns (bytes32){
+    function generateRandom() external override payable returns (bytes32){
         queryId = queryId + 1;
         bytes32 query = bytes32(queryId);
         callingMap[query] = IRNGReceiver(msg.sender);

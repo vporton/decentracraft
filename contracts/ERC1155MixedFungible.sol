@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 import "./ERC1155.sol";
 
@@ -47,7 +47,7 @@ contract ERC1155MixedFungible is ERC1155 {
     }
 
     // override
-    function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data) external {
+    function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data) external override {
 
         require(_to != address(0x0), "cannot send to zero address");
         require(_from == msg.sender || operatorApproval[_from][msg.sender] == true, "Need operator approval for 3rd party transfers.");
@@ -72,7 +72,7 @@ contract ERC1155MixedFungible is ERC1155 {
     }
 
     // override
-    function safeBatchTransferFrom(address _from, address _to, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external {
+    function safeBatchTransferFrom(address _from, address _to, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external override {
 
         require(_to != address(0x0), "cannot send to zero address");
         require(_ids.length == _values.length, "Array length must match");
@@ -101,13 +101,13 @@ contract ERC1155MixedFungible is ERC1155 {
         }
     }
 
-    function balanceOf(address _owner, uint256 _id) external view returns (uint256) {
+    function balanceOf(address _owner, uint256 _id) external override view returns (uint256) {
         if (isNonFungibleItem(_id))
             return nfOwners[_id] == _owner ? 1 : 0;
         return balances[_id][_owner];
     }
 
-    function balanceOfBatch(address[] calldata _owners, uint256[] calldata _ids) external view returns (uint256[] memory) {
+    function balanceOfBatch(address[] calldata _owners, uint256[] calldata _ids) external override view returns (uint256[] memory) {
 
         require(_owners.length == _ids.length);
 

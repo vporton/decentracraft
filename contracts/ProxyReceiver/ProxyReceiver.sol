@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 import "./IERC1538.sol";
 import "./ProxyBaseStorage.sol";
@@ -42,14 +42,15 @@ contract ProxyReceiver is ProxyBaseStorage, IERC1538 {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    function() external payable {
+    receive() external payable {
         address delegate = delegates[msg.sig];
         require(delegate != address(0), "Function does not exist.");
         assembly {
             let ptr := mload(0x40)
-            calldatacopy(ptr, 0, calldatasize)
-            let result := delegatecall(gas, delegate, ptr, calldatasize, 0, 0)
-            let size := returndatasize
+            let callsize := calldatasize()
+            calldatacopy(ptr, 0, callsize)
+            let result := delegatecall(gas(), delegate, ptr, callsize, 0, 0)
+            let size := returndatasize()
             returndatacopy(ptr, 0, size)
             switch result
             case 0 {revert(ptr, size)}
@@ -68,7 +69,7 @@ contract ProxyReceiver is ProxyBaseStorage, IERC1538 {
     /// @param _functionSignatures A list of function signatures listed one after the other
     /// @param _commitMessage A short description of the change and why it is made
     ///        This message is passed to the CommitMessage event.
-    function updateContract(address _delegate, string calldata _functionSignatures, string calldata _commitMessage) external {
+    function updateContract(address _delegate, string calldata _functionSignatures, string calldata _commitMessage) external override {
 
         // ***
         // NEEDS SECURITY ADDING HERE, SUGGEST MULTI-ADDRESS APPROVAL SYSTEM OR EQUIVALENT.
@@ -130,7 +131,7 @@ contract ProxyReceiver is ProxyBaseStorage, IERC1538 {
                         funcSignatures[index] = funcSignatures[lastIndex];
                         funcSignatureToIndex[funcSignatures[lastIndex]] = index + 1;
                     }
-                    funcSignatures.length--;
+                    funcSignatures.pop();
                     delete funcSignatureToIndex[signatures];
                     delete delegates[funcId];
                     emit FunctionUpdate(funcId, oldDelegate, address(0), string(signatures));

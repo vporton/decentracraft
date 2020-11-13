@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 import "./ERC1155.sol";
 
@@ -23,6 +23,7 @@ contract ERC1155Mintable is ERC1155 {
 
     function supportsInterface(bytes4 _interfaceId)
     public
+    override
     view
     returns (bool) {
         if (_interfaceId == INTERFACE_SIGNATURE_URI) {

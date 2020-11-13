@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 /// @title ERC1538 Transparent Contract Standard
 /// @dev Required interface

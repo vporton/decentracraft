@@ -11,6 +11,7 @@
     "@babel/polyfill": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/register": "^7.4.0",
+    "@chainlink/contracts": "^0.0.11",
     "@truffle/hdwallet-provider": "^1.0.19",
     "bignumber.js": "^4.1.0",
     "command-line-args": "^5.1.1",
@@ -23,13 +24,14 @@
     "node-fetch": "^2.6.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
+    "truffle": "^5.1.53",
     "truffle-artifactor": "^4.0.30",
     "truffle-contract": "^4.0.31",
     "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
-    "nodemon": "^1.19.2",
-    "cross-env": "^5.2.0"
+    "cross-env": "^5.2.0",
+    "nodemon": "^1.19.2"
   },
   "scripts": {
     "test": "truffle test",

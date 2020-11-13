@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 import "./Common.sol";
 import "./IERC1155TokenReceiver.sol";
@@ -19,7 +19,7 @@ contract ERC1155MockReceiver is ERC1155TokenReceiver, CommonConstants {
         shouldReject = _value;
     }
 
-    function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _value, bytes calldata _data) external returns(bytes4) {
+    function onERC1155Received(address _operator, address _from, uint256 _id, uint256 _value, bytes calldata _data) external override returns(bytes4) {
         lastOperator = _operator;
         lastFrom = _from;
         lastId = _id;
@@ -32,7 +32,7 @@ contract ERC1155MockReceiver is ERC1155TokenReceiver, CommonConstants {
         }
     }
 
-    function onERC1155BatchReceived(address _operator, address _from, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external returns(bytes4) {
+    function onERC1155BatchReceived(address _operator, address _from, uint256[] calldata _ids, uint256[] calldata _values, bytes calldata _data) external override returns(bytes4) {
         lastOperator = _operator;
         lastFrom = _from;
         lastId = _ids[0];

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 pragma experimental ABIEncoderV2;
 
 import "./Decentracraft.sol";
@@ -28,7 +28,7 @@ contract DecentracraftWorld is Ownable, IRNGReceiver {
         msg.sender.transfer(address(this).balance);
     }
 
-    function () external payable {
+    receive () external payable {
     }
 
     struct NFTRewardRequest{
@@ -280,7 +280,7 @@ contract DecentracraftWorld is Ownable, IRNGReceiver {
         }
     }
 
-    function __callback(bytes32 _queryId, uint256 _rng) public {
+    function __callback(bytes32 _queryId, uint256 _rng) public override {
         emit LogMessage("__callback");
         require(msg.sender == address(rng));
         require(randomQueryRPSMap[_queryId]._rewardedPlayer != address(0));        

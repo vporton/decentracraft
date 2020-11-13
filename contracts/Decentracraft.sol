@@ -1,4 +1,4 @@
-pragma solidity ^0.5.11;
+pragma solidity ^0.6.0;
 
 import "./DecentracraftItem.sol";
 import "./ERC1155MixedFungible.sol";
@@ -20,7 +20,7 @@ contract Decentracraft is ERC1155MixedFungible  {
         msg.sender.transfer(address(this).balance);
     }
 
-    function () external payable {
+    receive () external payable {
     }
 
     uint256 nonce;
