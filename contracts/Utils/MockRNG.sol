@@ -8,7 +8,7 @@ import "./Ownable.sol";
     @dev Mock Random Number Generator
     Used for testing purposes only
 */
-contract MockRNG is Ownable, IRandomGenerator {
+contract MockRNG is IRandomGenerator {
 
     event generatedRandomNumber(uint256 randomNumber);
 
@@ -17,10 +17,20 @@ contract MockRNG is Ownable, IRandomGenerator {
 
     event LogRandomQueryCreated(uint queryId);
 
+    address public owner;
     mapping (bytes32 => IRNGReceiver) public callingMap;
     uint public queryId = 0;
 
     constructor () public payable  { 
+        owner = msg.sender;
+    }
+
+    function setOwner(address _owner) external ownerOnly {
+        owner = _owner;
+    }
+    
+    modifier ownerOnly() {
+      if (msg.sender == owner) _;
     }
 
     function generateRandom() external payable returns (bytes32){
