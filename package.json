@@ -10,7 +10,7 @@
     "@babel/core": "^7.4.0",
     "@babel/polyfill": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
-    "@babel/register": "^7.4.0",
+    "@babel/register": "^7.25.9",
     "@truffle/hdwallet-provider": "^1.0.19",
     "bignumber.js": "^4.1.0",
     "command-line-args": "^5.1.1",
